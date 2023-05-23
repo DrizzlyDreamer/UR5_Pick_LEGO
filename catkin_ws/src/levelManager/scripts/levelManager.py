@@ -36,7 +36,7 @@ def get_Parent_Child(jointEl):
 	child = jointEl.find('child').text.split('::')[0]
 	return parent, child
 
-
+#这段代码的功能是从LEGO构建模型的列表中随机选择一个模型，并将其加载到Gazebo仿真环境中。
 def getLego4Costruzione(select=None):
 	nome_cost = randomCostruzione()
 	if select is not None: nome_cost = costruzioni[select]
@@ -276,6 +276,7 @@ def setUpArea(livello=None, selectBrick=None):
 		elif(livello == 4):
 			if selectBrick is None:
 				#spawn blocks build
+				#加载模型
 				spawn_dim = (0.10, 0.10)    			#spawning area
 				spawnaLego('X1-Y2-Z2',rotated=True)
 				spawnaLego('X1-Y2-Z2',rotated=True)

@@ -439,19 +439,22 @@ def start_node():
     
     print("Subscribing to camera images")
     #topics subscription
-    rgb = message_filters.Subscriber("/camera/color/image_raw", Image)
-    depth = message_filters.Subscriber("/camera/depth/image_raw", Image)
+    #订阅图像话题
+    rgb = message_filters.Subscriber("/camera/color/image_raw", Image)       #RGB图像话题
+    depth = message_filters.Subscriber("/camera/depth/image_raw", Image)     #深度图像话题
     
     #publisher results
-    pub=rospy.Publisher("lego_detections", ModelStates, queue_size=1)
+    pub=rospy.Publisher("lego_detections", ModelStates, queue_size=1)   #-----关键---------，这个东西发消息给motion_planning了
 
     print("Localization is starting.. ")
     print("(Waiting for images..)", end='\r'), print(end='\033[K')
     
     #images synchronization
+    # 图像同步
     syncro = message_filters.TimeSynchronizer([rgb, depth], 1, reset=True)
     syncro.registerCallback(process_CB)
     
+    # 保持节点一直运行
     #keep node always alive
     rospy.spin() 
     pass
@@ -461,12 +464,12 @@ def load_models():
     
     #yolo model and weights classification
     print("Loading model best.pt")
-    weight = path.join(path_weigths, 'best.pt')
+    weight = path.join(path_weigths, 'best.pt')     #检测和分类目标对象
     model = torch.hub.load(path_yolo,'custom',path=weight, source='local')
 
     #yolo model and weights orientation
     print("Loading model orientation.pt")
-    weight = path.join(path_weigths, 'depth.pt')
+    weight = path.join(path_weigths, 'depth.pt')    #检测目标对象的方向信息
     model_orientation = torch.hub.load(path_yolo,'custom',path=weight, source='local')
     pass
 

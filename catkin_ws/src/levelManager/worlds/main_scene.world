@@ -55,6 +55,8 @@
     </model>
 
     <!-- Kinect camera used for detection -0.58 -0.528 -0.437720 -0.50-->
+    <!-- (x,y,z,roll,pitch,yaw) -->
+    
     <model name="kinect">
       <static>true</static>
       <include>

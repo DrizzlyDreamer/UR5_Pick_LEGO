@@ -1,3 +1,4 @@
+
 import math
 import copy
 import rospy
@@ -62,10 +63,10 @@ class ArmController:
         :return:
         """
 
-        def smooth(percent_value, period=math.pi):
+        def smooth(percent_value, period=math.pi):      #使用余弦函数平滑输入值
             return (1 - math.cos(percent_value * period)) / 2
 
-        (sx, sy, sz), start_quat = self.gripper_pose
+        (sx, sy, sz), start_quat = self.gripper_pose    #当前夹爪的位姿  ，输入的 x y z 就是要到达的位置
 
         if x is None:
             x = sx
@@ -76,28 +77,28 @@ class ArmController:
         if target_quat is None:
             target_quat = start_quat
 
-        dx, dy, dz = x - sx, y - sy, z - sz
-        length = math.sqrt(dx ** 2 + dy ** 2 + dz ** 2) * 300 + 80
+        dx, dy, dz = x - sx, y - sy, z - sz  #计算误差
+        length = math.sqrt(dx ** 2 + dy ** 2 + dz ** 2) * 300 + 80    #计算路径长度 （用了缩放和偏移）
         speed = length
 
-        steps = int(length)
-        step = 1 / steps
+        steps = int(length) #长度即步数
+        step = 1 / steps  #步长
 
-        for i in np.arange(0, 1 + step, step):
-            i_2 = smooth(i, 2 * math.pi)  # from 0 to 1 to 0
-            i_1 = smooth(i)  # from 0 to 1
+        for i in np.arange(0, 1 + step, step):  # 从0开始，以步长 step 递增的数组，直到达到或略微超过1
+            i_2 = smooth(i, 2 * math.pi)  # from 0 to 1 to 0  # 从0到1再到0的平滑变化
+            i_1 = smooth(i)  # from 0 to 1   # 从0到1的平滑变化
 
-            grip = Quaternion.slerp(start_quat, target_quat, i_1)
+            grip = Quaternion.slerp(start_quat, target_quat, i_1)  # 根据插值计算当前姿态
             self.send_joints(
-                sx + i_1*dx, sy + i_1*dy, sz + i_1*dz + i_2*z_raise,
+                sx + i_1*dx, sy + i_1*dy, sz + i_1*dz + i_2*z_raise, # 根据插值计算当前位置
                 grip,
-                duration=1/speed*0.9)
-            rospy.sleep(1/speed)
+                duration=1/speed*0.9)  # 发送关节控制命令
+            rospy.sleep(1/speed)  # 发送关节控制命令
 
         if blocking:
-            self.wait_for_position(tol_pos=0.005, tol_vel=0.08)
+            self.wait_for_position(tol_pos=0.005, tol_vel=0.08)  # 等待到达目标位置和速度满足要求
 
-        self.gripper_pose = (x, y, z), target_quat
+        self.gripper_pose = (x, y, z), target_quat  # 更新夹爪姿态和位置
 
     def send_joints(self, x, y, z, quat, duration=1.0):  # x,y,z and orientation of lego block
         # Solve for the joint angles, select the 5th solution
