@@ -1,3 +1,7 @@
+# 补充
+- 在原来项目的基础上做了一点点修改
+- 并且导出了我自己可运行的配置（environment.yml和requirements.txt）
+
 <p align="center">
   <h2 align="center">UR5 Pick and Place Simulation in Ros/Gazebo</h2>
 
