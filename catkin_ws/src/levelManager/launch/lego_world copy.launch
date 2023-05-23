@@ -50,14 +50,4 @@
   <!-- Start Level Manager 载和启动UR5机器人的控制器、创建TF发布器以发布机器人的状态。这样，可以通过发布相应的控制指令来控制机器人的运动和夹爪的动作。 -->
   <node pkg="levelManager" name="levelManager" type="levelManager.py" output="screen" />
 
-  <include file="$(find ur5_moveit_config)/launch/hh_ur5_moveit_planning_execution.launch">
-    <arg name="debug" default="$(arg debug)" />
-    <arg name="sim" default="$(arg sim)" />
-  </include>
-
-  <include file="$(find ur5_moveit_config)/launch/moveit_rviz.launch">
-    <arg name="debug" default="$(arg debug)" />
-    <arg name="config" default="true" />
-  </include>
-
 </launch>

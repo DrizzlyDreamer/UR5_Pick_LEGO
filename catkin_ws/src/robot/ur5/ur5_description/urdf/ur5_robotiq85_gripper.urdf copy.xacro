@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <robot name="ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <!-- 引入Ur5和抓手 -->
-  <xacro:include filename="$(find ur5_description)/urdf/ur5_joint_limited_robot.urdf.xacro" />
+
+  <xacro:include filename="$(find ur_description)/urdf/ur5_joint_limited_robot.urdf.xacro" />
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_85_gripper.urdf.xacro" />
   
-  <!-- Robotiq Coupler   这个是那个机器人和Gripper的中间接口-->
+  <!-- Robotiq Coupler -->
   <!--  + Height added by the coupler: 8mm -->
   <!--  + Reference frame: at the middle (4mm) -->
-  <!-- <link name="robotiq_coupler">
+  <link name="robotiq_coupler">
     <visual>
       <geometry>
         <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl" />
@@ -25,20 +25,18 @@
       <inertia ixx="6.69695624e-05" ixy="5.21511788e-09" ixz="-2.74383009e-08" 
                iyy="7.85088161e-05" iyz="5.41105193e-07" izz="1.41819717e-04"/>
     </inertial>
-  </link> -->
+  </link>
 
-<!-- 设置这个连接器的Gazebo属性，包括摩擦系数和材质 -->
-  <!-- <joint name="robotiq_coupler_joint" type="fixed">
+  <joint name="robotiq_coupler_joint" type="fixed">
     <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}" />
     <parent link="tool0"/>
     <child link="robotiq_coupler"/>
   </joint>
-  
   <gazebo reference="robotiq_coupler">
     <mu1>0.9</mu1>
     <mu2>0.9</mu2>
     <material>Gazebo/FlatBlack</material>
-  </gazebo> -->
+  </gazebo>
   
   <!-- Equivalent to the OpenRAVE manipulator denso_robotiq_85_gripper -->
   <!-- <link name="denso_robotiq_85_gripper" /> -->
@@ -48,10 +46,9 @@
   <!--   <child link="denso_robotiq_85_gripper"/> -->
   <!-- </joint> -->
   
-  <!-- Attach the robotiq 85 gripper，把gripper装到连接器上  ，他的源文件做了个转角   robotiq_coupler-->
-  <xacro:robotiq_85_gripper prefix="" parent="ee_link" >
-    <!-- <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/> -->
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+  <!-- Attach the robotiq 85 gripper -->
+  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler" >
+    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
   </xacro:robotiq_85_gripper> 
   
   <!-- Gazebo FT sensor plugin -->
@@ -67,7 +64,7 @@
     </plugin>
   </gazebo>
   
-  <!-- Gazebo grasping plugin义了一个抓取插件，用于模拟抓取过程。该插件指定了夹爪链接和掌链接，以及抓取过程中的一些参数，如附着和分离的步骤数量和最小接触点数。 -->
+  <!-- Gazebo grasping plugin -->
   <gazebo>
     <gripper name="gazebo_gripper">
       <grasp_check>
