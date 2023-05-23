@@ -57,22 +57,23 @@ for model, model_info in MODELS_INFO.items():
     #MODELS_INFO[model]["home"] = model_info["home"] + np.array([0.0, 0.10, 0.0])
 
 for model, info in MODELS_INFO.items():
-    model_json_path = os.path.join(PKG_PATH, "..", "models", f"lego_{model}", "model.json")
+    model_json_path = os.path.join(PKG_PATH, "..", "models", f"lego_{model}", "model.json")  #构建model.json文件路径
     # make path absolute
-    model_json_path = os.path.abspath(model_json_path)
-    # check path exists
+    model_json_path = os.path.abspath(model_json_path)      #将路径转换为绝对路径
+    # check path exists # 检查路径是否存在
     if not os.path.exists(model_json_path):
         raise FileNotFoundError(f"Model file {model_json_path} not found")
-
+    # 读取model.json文件内容
     model_json = json.load(open(model_json_path, "r"))
+    # 获取模型的角点坐标
     corners = np.array(model_json["corners"])
-
+    # 计算模型在 x、y、z 轴方向的尺寸
     size_x = (np.max(corners[:, 0]) - np.min(corners[:, 0]))
     size_y = (np.max(corners[:, 1]) - np.min(corners[:, 1]))
     size_z = (np.max(corners[:, 2]) - np.min(corners[:, 2]))
 
     #print(f"{model}: {size_x:.3f} x {size_y:.3f} x {size_z:.3f}")
-
+    # 将模型的尺寸信息添加到 MODELS_INFO 字典中
     MODELS_INFO[model]["size"] = (size_x, size_y, size_z)
 
 # Compensate for the interlocking height
