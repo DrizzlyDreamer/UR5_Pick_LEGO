@@ -10,7 +10,7 @@
   <rosparam file="$(find ur5_gazebo)/controller/ur5gripper_controllers.yaml"
             command="load" />
 
-  <!-- Load controllers -->
+  <!-- Load controllers 使得控制器生效-->
   <node name="robot_controllers" pkg="controller_manager" type="spawner"
         output="$(arg DEBUG)"
         args="joint_state_controller trajectory_controller gripper_controller"/>

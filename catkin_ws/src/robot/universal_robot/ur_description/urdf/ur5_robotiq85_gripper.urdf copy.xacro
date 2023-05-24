@@ -7,7 +7,7 @@
   <!-- Robotiq Coupler -->
   <!--  + Height added by the coupler: 8mm -->
   <!--  + Reference frame: at the middle (4mm) -->
-  <!-- <link name="robotiq_coupler">
+  <link name="robotiq_coupler">
     <visual>
       <geometry>
         <mesh filename="package://robotiq_description/meshes/robotiq_85_coupler.stl" />
@@ -36,7 +36,7 @@
     <mu1>0.9</mu1>
     <mu2>0.9</mu2>
     <material>Gazebo/FlatBlack</material>
-  </gazebo> -->
+  </gazebo>
   
   <!-- Equivalent to the OpenRAVE manipulator denso_robotiq_85_gripper -->
   <!-- <link name="denso_robotiq_85_gripper" /> -->
@@ -47,8 +47,8 @@
   <!-- </joint> -->
   
   <!-- Attach the robotiq 85 gripper -->
-  <xacro:robotiq_85_gripper prefix="" parent="ee_link" >
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+  <xacro:robotiq_85_gripper prefix="" parent="robotiq_coupler" >
+    <origin xyz="0 0 0.004" rpy="0 ${-pi/2} ${pi}"/>
   </xacro:robotiq_85_gripper> 
   
   <!-- Gazebo FT sensor plugin -->

@@ -9,9 +9,10 @@
   <arg name="debug"      default="false"/>
   <arg name="gui"        default="true"/>
   <arg name="rate"       default="125" />
+  <arg name="sim"        default="true" />
   <arg name="world_name" default="$(find levelManager)/worlds/main_scene.world" />
   
-  <!-- Start up simulated world -->
+  <!-- Start up simulated world 一样-->
    <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/>
     <arg name="paused"     value="$(arg paused)"/>
@@ -19,8 +20,8 @@
     <arg name="gui"        value="$(arg gui)"/>
   </include>
 
-  <!-- Send robot urdf to param server 加载ur5和gripper-->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur5_description)/urdf/ur5_robotiq85_gripper.urdf.xacro'" />
+  <!-- Send robot urdf to param server 加载ur5和gripper   一样-->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_description)/urdf/ur5_robotiq85_gripper.urdf.xacro'" />
   <!-- Spawn robot in gazebo (and move it upwards):
        better initial values should be -2.355 and 1.57 but the robot does
        something strange when unpausing it
@@ -43,21 +44,21 @@
   <!--<node name="spawn_work_surface" pkg="gazebo_ros" type="spawn_model"
         args="-sdf -file $(arg sdf_robot_file) -model work_table -x 0 -y -0.558 -z 0 -Y -3.1415926535"
   output="screen" />-->
-  <!-- 控制器，包括了Ur5和Gripper的 -->
+  <!-- 控制器的参数和加载，包括了Ur5和Gripper的 -->
   <include file="$(find ur5_gazebo)/launch/ur5_controllers.launch" />
 
 
   <!-- Start Level Manager 载和启动UR5机器人的控制器、创建TF发布器以发布机器人的状态。这样，可以通过发布相应的控制指令来控制机器人的运动和夹爪的动作。 -->
-  <node pkg="levelManager" name="levelManager" type="levelManager.py" output="screen" />
-
-  <include file="$(find ur5_moveit_config)/launch/hh_ur5_moveit_planning_execution.launch">
+  <!-- <node pkg="levelManager" name="levelManager" type="levelManager.py" output="screen" /> -->
+<!-- 这个是想启动moveit的，那个CSDN作者想启动MoveIt -->
+  <include file="$(find ur5_gripper_moveit_config)/launch/hh_ur5_moveit_planning_execution.launch">
     <arg name="debug" default="$(arg debug)" />
     <arg name="sim" default="$(arg sim)" />
   </include>
-
-  <include file="$(find ur5_moveit_config)/launch/moveit_rviz.launch">
+<!-- 启动rviz -->
+  <include file="$(find ur5_gripper_moveit_config)/launch/moveit_rviz.launch">
     <arg name="debug" default="$(arg debug)" />
-    <arg name="config" default="true" />
+    <arg name="rviz_config" default="true" />
   </include>
 
 </launch>
