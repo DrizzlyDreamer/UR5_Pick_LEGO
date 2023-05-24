@@ -21,7 +21,7 @@
   </include>
 
   <!-- send robot urdf to param server -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_description)/urdf/ur5_robotiq85_gripper.urdf.xacro'"/>
+  <param name="robot_description" command="xacro  '$(find ur_description)/urdf/ur5_robotiq85_gripper.urdf.xacro'"/>
   
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <!--node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0" respawn="false" output="screen"/-->
@@ -48,9 +48,10 @@
   <!--控制器我先用LEGO原版  -->
   <!-- <include file="$(find ur5_gazebo)/launch/ur5_controllers.launch" /> -->
 
-  <!-- 用英文老哥那套控制器,第三个是tf,有了tf才能坐标系转换 -->
+  <!-- 用英文老哥那套控制器, joint_state_controller  第三个是tf,有了tf才能坐标系转换 -->
   <rosparam file="$(find ur5_gripper_moveit_config)/config/gazebo_controllers.yaml" />
   <include file="$(find ur5_gripper_moveit_config)/launch/ros_controllers.launch"/>
+
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
   <!-- Effort Controllers -->
