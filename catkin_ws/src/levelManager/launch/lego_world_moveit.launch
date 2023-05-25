@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Export env variable so that gazebo finds our models -->
-  <!-- 缺少PID -->
   <env name="GAZEBO_MODEL_PATH"
        value="$(optenv GAZEBO_MODEL_PATH):$(find levelManager)/models:$(find levelManager)/lego_models" />
 
