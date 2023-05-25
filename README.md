@@ -1,6 +1,14 @@
 # 补充
 - 在原来项目的基础上做了一点点修改
 - 并且导出了我自己可运行的配置（environment.yml和requirements.txt）
+- CSDN博客地址：https://blog.csdn.net/dolpin_ink/article/details/130814674?spm=1001.2014.3001.5502
+
+## 完成MoveIt配置后 利用Rviz|Moveit控制 的启动方式
+- 记得先catkin build啊
+- 这个是原版的，没有背景
+```roslaunch ur5_gripper_moveit_config demo_gazebo.launch```
+- 这个是我改进后的，有背景
+```roslaunch levelManager lego_world_moveit.launch```
 
 <p align="center">
   <h2 align="center">UR5 Pick and Place Simulation in Ros/Gazebo</h2>
